@@ -17,8 +17,8 @@ Before running this sample, you will need the following:
 To run this application, you first need to clone this repo and then enter into this directory:
 
 ```bash
-git clone https://github.com/okta/samples-js-angular.git
-cd samples-js-angular/custom-login
+git clone https://github.com/Swathi-kolli/angular-profile-app.git
+cd angular-profile-app
 ```
 
 Then install dependencies:
@@ -32,12 +32,7 @@ Now you need to gather the following information from the Okta Developer Console
 - **Client Id** - The client ID of the SPA application that you created earlier. This can be found on the "General" tab of an application, or the list of applications.  This identifies the application that tokens will be minted for.
 - **Issuer** - This is the URL of the authorization server that will perform authentication.  All Developer Accounts have a "default" authorization server.  The issuer is a combination of your Org URL (found in the upper right of the console home page) and `/oauth2/default`. For example, `https://dev-1234.oktapreview.com/oauth2/default`.
 
-These values must exist as environment variables. They can be exported in the shell, or saved in a file named `testenv`, at the root of this repository. (This is the parent directory, relative to this README) See [dotenv](https://www.npmjs.com/package/dotenv) for more details on this file format.
-
-```ini
-ISSUER=https://yourOktaDomain.com/oauth2/default
-CLIENT_ID=123xxxxx123
-```
+Replace the ISSUER and CLIENT_ID with your issuer url and your application client id in "app.config.ts" file
 
 > NOTE: If you are running the sample against an org that has [Okta's Identity
 Engine](https://developer.okta.com/docs/concepts/ie-intro/) enabled, you will need to add the following environment variable to your `testenv` file 
