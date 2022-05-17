@@ -13,6 +13,7 @@
 import { Component, Inject } from '@angular/core';
 import { OktaAuthStateService, OKTA_AUTH } from '@okta/okta-angular';
 import { OktaAuth } from '@okta/okta-auth-js';
+import { interval, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -21,12 +22,26 @@ import { OktaAuth } from '@okta/okta-auth-js';
 })
 export class AppComponent {
   title = 'app';
+  timerSubscription: Subscription;
 
   constructor(public authStateService: OktaAuthStateService, @Inject(OKTA_AUTH) private oktaAuth: OktaAuth) {
+    this.timerSubscription= interval(5000).subscribe((async x =>{
+      if(await this.oktaAuth.isAuthenticated()) {
+        this.getSessions().then(response =>{
+          response.status === 404 ? this.signout() : '';
+        });
+      }
+    }));
 
   }
-
   async logout() {
     await this.oktaAuth.signOut();
+  }
+  signout(){
+    this.oktaAuth.signOut();
+  }
+
+  getSessions() {
+    return fetch('https://dev-14024911.okta.com/api/v1/sessions/me', {credentials: "include"});
   }
 }

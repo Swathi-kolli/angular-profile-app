@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit {
       el: '#sign-in-widget',
       scopes: sampleConfig.oidc.scopes
     }).then((tokens: Tokens) => {
+      console.log("tokens", tokens)
       // Remove the widget
       this.signIn.remove();
 

@@ -26,14 +26,16 @@ interface Claim {
 })
 export class ProfileComponent implements OnInit {
   claims: Claim[] = [];
-
-  constructor(@Inject(OKTA_AUTH) public oktaAuth: OktaAuth) {
-
+  
+  constructor(@Inject(OKTA_AUTH) public oktaAuth: OktaAuth ) {
+    
   }
-
+  
   async ngOnInit() {
+    
     const userClaims = await this.oktaAuth.getUser();
     this.claims = Object.entries(userClaims).map(entry => ({ claim: entry[0], value: entry[1] }));
   }
+
 
 }

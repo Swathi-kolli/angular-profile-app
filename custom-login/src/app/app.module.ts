@@ -31,7 +31,6 @@ import config from './app.config';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { MessagesComponent } from './messages/messages.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ConfirmModalComponent, ConfirmModal } from './modal/confirm.component';
 
@@ -53,11 +52,6 @@ const appRoutes: Routes = [
     component: ProfileComponent,
     canActivate: [ OktaAuthGuard ],
   },
-  {
-    path: 'messages',
-    component: MessagesComponent,
-    canActivate: [ OktaAuthGuard ],
-  },
 ];
 
 @NgModule({
@@ -65,7 +59,6 @@ const appRoutes: Routes = [
     AppComponent,
     HomeComponent,
     ProfileComponent,
-    MessagesComponent,
     LoginComponent,
     ConfirmModalComponent,
   ],
