@@ -1,78 +1,75 @@
-# Angular Sample Applications for Okta
+# Okta Angular + Custom Login Example
 
-This repository contains several sample applications that demonstrate various Okta use-cases in your Angular application.
+This example shows you how to use the [Okta Angular Library][] to login a user to an Angular application.  The login is achieved with the [Okta Sign In Widget][], which gives you more control to customize the login experience within your app.
 
-Each sample makes use of the [Okta Angular Library][].
+This example is built with [Angular CLI][].
 
-If you haven't done so already, register for a free account at [developer.okta.com](https://developer.okta.com/). Select **Create Free Account** and fill in the forms to complete the registration process. Once you are done and logged in, you will see your Okta Developer Console. 
+## Prerequisites
 
-> **Tip**: You can also create an account using the [Okta CLI](https://github.com/oktadeveloper/okta-cli) and `okta register`. To create an app, run `okta apps create` and use the settings below.
+Before running this sample, you will need the following:
 
-Register your application by selecting **Applications** > **Add Application**. On the next screen, choose **Single Page App** and click **Next**.
+* An Okta Developer Account, you can sign up for one at https://developer.okta.com/signup/.
+* An Okta Application, configured for Singe-Page App (SPA) mode. This is done from the Okta Developer Console and you can find instructions [here][OIDC SPA Setup Instructions].  When following the wizard, use the default properties.  They are are designed to work with our sample applications.
 
-On the following screen, edit the application settings. For these sample applications we are using port number 8080. Configure your app as follows:
 
-* **Base URI**: `http://localhost:8080`
-* **Login redirect URI**: `http://localhost:8080/login/callback` 
-* **Logout redirect URI**: `http://localhost:8080` 
+## Running This Example
 
-Once you have completed the form, you will be given a **client ID**. You will also need the **issuer** value for your Okta org. 
+To run this application, you first need to clone this repo and then enter into this directory:
 
-The **issuer** is the URL of the authorization server that will perform authentication.  All Developer Accounts have a "default" authorization server.  The issuer is a combination of your Org URL (found in the upper right of the console home page) and `/oauth2/default`. For example, `https://dev-133337.okta.com/oauth2/default`.
+```bash
+git clone https://github.com/okta/samples-js-angular.git
+cd samples-js-angular/custom-login
+```
 
-These values must exist as environment variables. They can be exported in the shell, or saved in a file named `testenv`, located in the same directory as this README. See [dotenv](https://www.npmjs.com/package/dotenv) for more details on this file format.
+Then install dependencies:
+
+```bash
+npm install
+```
+
+Now you need to gather the following information from the Okta Developer Console:
+
+- **Client Id** - The client ID of the SPA application that you created earlier. This can be found on the "General" tab of an application, or the list of applications.  This identifies the application that tokens will be minted for.
+- **Issuer** - This is the URL of the authorization server that will perform authentication.  All Developer Accounts have a "default" authorization server.  The issuer is a combination of your Org URL (found in the upper right of the console home page) and `/oauth2/default`. For example, `https://dev-1234.oktapreview.com/oauth2/default`.
+
+These values must exist as environment variables. They can be exported in the shell, or saved in a file named `testenv`, at the root of this repository. (This is the parent directory, relative to this README) See [dotenv](https://www.npmjs.com/package/dotenv) for more details on this file format.
 
 ```ini
 ISSUER=https://yourOktaDomain.com/oauth2/default
 CLIENT_ID=123xxxxx123
 ```
 
-Please find the sample that fits your use-case from the table below.
+> NOTE: If you are running the sample against an org that has [Okta's Identity
+Engine](https://developer.okta.com/docs/concepts/ie-intro/) enabled, you will need to add the following environment variable to your `testenv` file 
+> USE_INTERACTION_CODE=true
 
-| Sample | Description |
-|--------|-------------|
-| [Okta-Hosted Login](/okta-hosted-login) | An Angular application that will redirect the user to the Okta-Hosted login page for authentication.  The user is redirected back to the Angular application after authenticating. |
-| [Custom Login Page](/custom-login) | An Angular application that uses the Okta Sign-In Widget within the Angular application to authenticate the user. |
+Now start the app server:
 
+```
+ng serve
+```
+
+>  **Note:** If you're on a windows machine, you might get an error similar to
+> `ng serve contains error Unknown browser query basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")`
+>
+> It's a [known issue](https://github.com/angular/angular-cli/issues/5075) on windows due to one of the dependencies we use. To resolve the issue, search for browserslist and browserslist.cmd files in your node_modules. Delete both the files and start the app server again.
+
+
+Now navigate to http://localhost:8080 in your browser.
+
+If you see a home page that prompts you to login, then things are working!  Clicking the **Log in** button will render a custom login page component that uses the Okta Sign-In Widget to perform authentication.
+
+You can login with the same account that you created when signing up for your Developer Org, or you can use a known username and password from your Okta Directory.
+
+> **Note:** If you are currently using your Developer Console, you already have a Single Sign-On (SSO) session for your Org.  You will be automatically logged into your application as the same user that is using the Developer Console.  You may want to use an incognito tab to test the flow from a blank slate.
+
+
+## Integrating The Resource Server
+
+This sample contains the same "Messages" page that is included in the [Okta Hosted Login](/okta-hosted-login) sample, please refer to that sample for instructions on setting up the resource server.
+
+[Angular CLI]: https://cli.angular.io/
 [Okta Angular Library]: https://github.com/okta/okta-oidc-js/tree/master/packages/okta-angular
-
-## Quick Start: Automatic Setup with Heroku
-
-You need a [Heroku](https://signup.heroku.com/) account to follow these instructions.
-
-You can create a free Okta Developer org and deploy this app directly to Heroku by clicking the purple button:
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-To deploy the app, you will need an Okta org setup as described in the section above.
-
-You will also need to replace the config values for `ISSUER` and `CLIENT_ID` in Heroku configuration based on your Okta org.
-Also be sure to add your Heroku app's base URL to the list of trusted origins in your Okta admin settings.
-
-After you deploy the app, you will also need to go to your Okta account to [enable cors](https://developer.okta.com/docs/guides/enable-cors/granting-cors/) and configure the `login` and `logout` redirect URI in your client application settings for the newly deployed app domain if they are not preconfigured. 
-
-**Note:** Due to sample apps are served under different routes, base urls will be needed for the redirect uris, e.g.`https://<myapp.heroku.com>/okta-hosted-login` or `https://<myapp.heroku.com>/custom-login`.
-
-Finally, click on **View** on the result screen to navigate to the newly deployed app.
-
-You can use your Okta user credentials to login to the applications. That's it! You've successfully logged in using Okta. 
-
-## Running the resource server
-The samples include a page which accesses a protected resource (messages). To start the sample resource server:
-
-```
-npm run resource-server
-```
-
-## Running the tests
-
-In addition to the other environment vars, you will need credentials for a test user. Add the values for your Okta org and user in a `testenv` file. 
-
-```ini
-ISSUER=https://yourOktaDomain.com/oauth2/default
-CLIENT_ID=123xxxxx123
-USERNAME=testuser@email.com
-PASSWORD=testpass
-```
-
-With these variables set, you should be able to run `npm test` and bask in the glory of passing tests.
+[PKCE Flow]: https://developer.okta.com/docs/guides/implement-auth-code-pkce
+[OIDC SPA Setup Instructions]: https://developer.okta.com/docs/guides/sign-into-spa/angular/before-you-begin
+[Okta Sign In Widget]: https://github.com/okta/okta-signin-widget
