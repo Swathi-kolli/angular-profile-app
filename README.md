@@ -32,11 +32,11 @@ Now you need to gather the following information from the Okta Developer Console
 - **Client Id** - The client ID of the SPA application that you created earlier. This can be found on the "General" tab of an application, or the list of applications.  This identifies the application that tokens will be minted for.
 - **Issuer** - This is the URL of the authorization server that will perform authentication.  All Developer Accounts have a "default" authorization server.  The issuer is a combination of your Org URL (found in the upper right of the console home page) and `/oauth2/default`. For example, `https://dev-1234.oktapreview.com/oauth2/default`.
 
-Replace the ISSUER and CLIENT_ID with your issuer url and your application client id in "app.config.ts" file
+Replace the ISSUER and CLIENT_ID with your issuer url and your application client id in "app.config.ts" file.
 
 > NOTE: If you are running the sample against an org that has [Okta's Identity
-Engine](https://developer.okta.com/docs/concepts/ie-intro/) enabled, you will need to add the following environment variable to your `testenv` file 
-> USE_INTERACTION_CODE=true
+Engine](https://developer.okta.com/docs/concepts/ie-intro/) enabled, you will need to update the following variable 
+> USE_INTERACTION_CODE=true in "app.config.ts" file.
 
 Now start the app server:
 
